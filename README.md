@@ -34,11 +34,10 @@ Stars Rating Bar
 
 มีบทอื่นๆ หรือ นอกจากบทเรียน ก็ได้
 
-![image](https://github.com/user-attachments/assets/181bfc2c-4d1d-44d8-ad7f-a869df74a877)
-
-
 1.แสดงหน้าจอที่ออกแบบ (VDO), 
 
 2.บอกชื่อ widget หรือ Package หลักๆที่ใช้, 
 
 3.อ้างอิง เว็บไซต์
+
+![image](https://github.com/user-attachments/assets/181bfc2c-4d1d-44d8-ad7f-a869df74a877)
