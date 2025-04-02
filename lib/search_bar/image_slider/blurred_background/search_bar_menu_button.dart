@@ -18,11 +18,11 @@ class SearchBarMenuButton extends StatelessWidget {
       ),
       child: ElevatedButton.icon(
         onPressed: onPressed,
-        icon: Icon(Boxicons.bx_category, color: Colors.white, size: 25),
+        icon: Icon(Boxicons.bx_category, color: Colors.pink, size: 25),
         label: Text(
           'หมวดหมู่',
           style: GoogleFonts.kanit(
-            color: Colors.white.withOpacity(0.9),
+            color: Colors.pink.withOpacity(0.9),
             fontSize: 16.0,
           ),
         ),

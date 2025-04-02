@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project1/trending_news/news_detail_page.dart';
+import 'package:project1/trending_news/click_news_page.dart';
 
 class AllNewsPage extends StatelessWidget {
   final List<Map<String, String>> allNews;
@@ -28,7 +28,7 @@ class AllNewsPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NewsDetailPage(newsItem: allNews[index]), // ใช้ NewsDetailPage
+                  builder: (context) => ClickNewsPage(newsItem: allNews[index]), // ใช้ NewsDetailPage
                 ),
               );
             },

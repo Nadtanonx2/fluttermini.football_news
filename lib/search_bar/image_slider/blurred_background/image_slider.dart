@@ -1,34 +1,48 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:project1/trending_news/news_detail_page.dart';
+import 'package:project1/trending_news/click_news_page.dart';
 
-class ImageSlider extends StatefulWidget {
-  final List<Map<String, String>> imageList; // เปลี่ยนเป็น List<Map<String, String>>
+class OverlappingSliderHeader extends StatefulWidget {
+  final List<Map<String, String>> imageList;
   final Function(int, CarouselPageChangedReason) onPageChanged;
+  final Widget searchBar; // รับ widget สำหรับ Search_Bar
 
-  ImageSlider({
+  const OverlappingSliderHeader({
+    Key? key,
     required this.imageList,
     required this.onPageChanged,
-  });
+    required this.searchBar,
+  }) : super(key: key);
 
   @override
-  _ImageSliderState createState() => _ImageSliderState();
+  _OverlappingSliderHeaderState createState() => _OverlappingSliderHeaderState();
 }
 
-class _ImageSliderState extends State<ImageSlider> {
+class _OverlappingSliderHeaderState extends State<OverlappingSliderHeader> {
   int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: Alignment.bottomCenter,
       children: [
+        // พื้นหลังเบลอ
+        Container(
+          width: double.infinity,
+          height: 220,
+          child: ImageFiltered(
+            imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+            child: Image.asset(
+              widget.imageList[_currentIndex]['image'] ?? 'assets/images/placeholder.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        // Carousel Slider
         CarouselSlider(
           options: CarouselOptions(
-            height: 210.0,
+            height: 220,
             autoPlay: true,
             viewportFraction: 1.0,
             enlargeCenterPage: false,
@@ -39,70 +53,54 @@ class _ImageSliderState extends State<ImageSlider> {
               });
             },
           ),
-          items: widget.imageList.map((item) { // เปลี่ยนจาก imagePath เป็น item
+          items: widget.imageList.map((item) {
             return Builder(
               builder: (BuildContext context) {
-                return GestureDetector( // เพิ่ม GestureDetector
+                return GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => NewsDetailPage(newsItem: item), // ส่ง item ไปยัง NewsDetailPage
+                        builder: (context) => ClickNewsPage(newsItem: item),
                       ),
                     );
                   },
-                  child: Container(
+                  child: Image.asset(
+                    item['image']!,
+                    fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 0.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(0.0),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(0.0),
-                      child: Image.asset(item['image']!, fit: BoxFit.cover), // ใช้ item['image']!
-                    ),
                   ),
                 );
               },
             );
           }).toList(),
         ),
+        // Dots indicator อยู่ด้านล่าง
         Positioned(
-          bottom: 1,
+          bottom: 10,
+          left: 0,
+          right: 0,
           child: DotsIndicator(
             dotsCount: widget.imageList.length,
             position: _currentIndex.toDouble(),
             decorator: DotsDecorator(
               size: const Size.square(7.0),
               activeSize: const Size(18.0, 5.0),
-              activeColor: Colors.black,
+              activeColor: Colors.white,
               activeShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
             ),
           ),
         ),
-      ],
-    );
-  }
-}
-
-class BlurredBackground extends StatelessWidget {
-  final String imagePath;
-  BlurredBackground({required this.imagePath});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 220.0,
-      child: ImageFiltered(
-        imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-        child: Image.asset(
-          imagePath,
-          fit: BoxFit.cover,
+        // วาง Search_Bar ไว้ด้านบนของสไลด์
+        Positioned(
+          top: 30,
+          left: 16,
+          right: 16,
+          child: widget.searchBar,
         ),
-      ),
+      ],
     );
   }
 }

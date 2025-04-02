@@ -1,62 +1,67 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project1/trending_news/all_trending_news.dart';
 import 'package:project1/trending_news/click_news_page.dart';
 
-
-class TrendingNews extends StatelessWidget {
+class LaLigaSpainNews extends StatelessWidget {
   final List<Map<String, String>> trendingNews;
 
-  const TrendingNews({super.key, required this.trendingNews});
+  const LaLigaSpainNews({super.key, required this.trendingNews});
 
   @override
   Widget build(BuildContext context) {
+    // คัดกรองข่าวที่มี section เป็น "La Liga Spain"
+    final laLigaSpainNews = trendingNews.where((news) {
+      final section = news['section']?.toLowerCase() ?? '';
+      return section == 'la liga spain'.toLowerCase();
+    }).toList();
+
     return Padding(
-      // ตั้ง padding ด้านล่างเป็น 0 เพื่อไม่ให้มีช่องว่างเพิ่มเติม
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16, bottom: 0),
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 0, bottom: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'ข่าวที่กำลังมาแรง',
+          // หัวข้อส่วนข่าวพร้อมปุ่ม "ดูทั้งหมด"
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'La Liga Spain',
+                style: GoogleFonts.kanit(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (context.mounted) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AllNewsPage(allNews: laLigaSpainNews),
+                      ),
+                    );
+                  }
+                },
+                child: Text(
+                  'ดูทั้งหมด',
                   style: GoogleFonts.kanit(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+                    color: Colors.orange,
+                    fontSize: 16,
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    if (context.mounted) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AllNewsPage(allNews: trendingNews),
-                        ),
-                      );
-                    }
-                  },
-                  child: Text(
-                    'ดูทั้งหมด',
-                    style: GoogleFonts.kanit(color: Colors.orange, fontSize: 16),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          // ลบ SizedBox ที่มีความสูงออกหรือปรับเป็น 0
-          const SizedBox(height: 0),
+          const SizedBox(height: 8.0),
+          // แสดงรายการข่าวแบบแนวนอน
           SizedBox(
             height: 200,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: trendingNews.length,
+              itemCount: laLigaSpainNews.length,
               itemBuilder: (context, index) {
-                final newsItem = trendingNews[index];
+                final newsItem = laLigaSpainNews[index];
                 return GestureDetector(
                   onTap: () {
                     if (context.mounted) {
@@ -73,6 +78,7 @@ class TrendingNews extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // รูปภาพข่าว
                         ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.asset(
@@ -83,11 +89,13 @@ class TrendingNews extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
+                        // หัวข้อข่าว
                         Text(
                           newsItem['title'] ?? 'ไม่มีหัวข้อข่าว',
                           style: GoogleFonts.kanit(fontSize: 14.0),
                         ),
                         const SizedBox(height: 4),
+                        // แหล่งที่มา
                         Text(
                           newsItem['refer'] ?? 'ไม่ระบุแหล่งที่มา',
                           style: GoogleFonts.kanit(fontSize: 14.0),

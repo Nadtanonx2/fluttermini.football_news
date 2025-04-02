@@ -66,6 +66,9 @@ flutter:
     - assets/images/image.png
     - assets/images/image1.webp
     - assets/images/image2.webp
+    - assets/images/chan-logo.jpg
+    - assets/images/LFP-logo.jpg
+    - assets/images/premier-league-logo.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

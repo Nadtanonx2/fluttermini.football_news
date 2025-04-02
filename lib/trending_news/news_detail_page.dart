@@ -32,7 +32,6 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
     final imageUrl = widget.newsItem['image'];
     final title = widget.newsItem['title'];
     final refer = widget.newsItem['refer'];
-    final seond = widget.newsItem['seond'];
     final content1 = widget.newsItem['content1'];
     final content2 = widget.newsItem['content2'];
     final content3 = widget.newsItem['content3'];
@@ -72,15 +71,6 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                               child: Center(child: Text('Image Error')),
                             );
                           },
-                        ),
-                      SizedBox(height: 16),
-                      if (seond != null)
-                        Text(
-                          seond,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
                         ),
                       SizedBox(height: 8),
                       if (content1 != null)
